@@ -108,25 +108,25 @@ class MyStack
     public void Reverse()
     {
         List<object> list = new List<object>();
-        while(this.top!=null)
+        while (this.top != null)
             list.Add(this.Pop());
-        foreach(object v in list)
+        foreach (object v in list)
             this.Push(v);
     }
     public void Sort()
     {
         List<object> list = new List<object>();
-        while(this.top!=null)
+        while (this.top != null)
             list.Add(this.Pop());
-        for(int i=0; i<list.Count-1; i++)
-            for(int j=i+1; j<list.Count; j++)
+        for (int i = 0; i < list.Count - 1; i++)
+            for (int j = i + 1; j < list.Count; j++)
                 if ((int)list[i] > (int)list[j])
                 {
                     object temp = list[i];
                     list[i] = list[j];
                     list[j] = temp;
                 }
-        foreach(object v in list)
+        foreach (object v in list)
             this.Push(v);
     }
     public void Print()
@@ -139,11 +139,75 @@ class MyStack
             temp.Push(t);
             Console.Write(t + "  ");
         }
-        while(temp.top!=null)
+        while (temp.top != null)
             this.Push(temp.Pop());
     }
 }
-
+public class Node2
+{
+    public Node2 prev, next;
+    public object data;
+}
+public class MyQueue
+{
+    Node2 rear, front;
+    public bool IsEmpty()
+    {
+        return rear == null || front == null;
+    }
+    public void Enqueue(object ele)
+    {
+        Node2 n = new Node2();
+        n.data = ele;
+        if (rear == null)
+        {
+            rear = n; front = n;
+        }
+        else
+        {
+            rear.prev = n;
+            n.next = rear; rear = n;
+        }
+    }
+    public Node2 Dequeue()
+    {
+        if (front == null) return null;
+        Node2 d = front;
+        front = front.prev;
+        if (front == null)
+            rear = null;
+        else
+            front.next = null;
+        return d;
+    }
+    public void Clear()
+    {
+        while (!this.IsEmpty())
+        {
+            this.Dequeue();
+        }
+    }
+    public void Count()
+    {
+        MyQueue temp = new MyQueue();
+        int count = 0;
+        while (!this.IsEmpty()){
+            temp.Enqueue(this.Dequeue());
+            count++;
+        }
+        while(!temp.IsEmpty())
+            this.Enqueue(temp.Dequeue());
+        return count;
+    }
+    public void Reverse()
+    {
+        MyStack temp = new MyStack();
+        while(!this.IsEmpty())
+            temp.Push(this.Dequeue());
+        while(!temp.Pop!=null)
+            this.Enqueue(temp.Pop());
+    }
+}
 class Program
 {
     static void Main(string[] args)
@@ -155,9 +219,9 @@ class Program
         st.Push(5);
         st.Push(2);
         st.Push(4);
-        
+
         st.Print();
-        Console.WriteLine("\nCount: "+st.Count());
+        Console.WriteLine("\nCount: " + st.Count());
         Console.WriteLine("Count Odd: " + st.CountOdd());
         Console.WriteLine("Sum: " + st.Sum());
 
